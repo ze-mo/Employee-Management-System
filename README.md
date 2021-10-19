@@ -8,6 +8,7 @@ Such functionality includes features as:
 - assigning projects
 - changing salary
 etc.
+
 The idea is that we perform different changes in our Employee Record by using different functions inside of our script.
 
 
