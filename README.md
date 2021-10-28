@@ -4,6 +4,7 @@ Project about a Database-driven Employee Management System. The repository consi
 
 The cycle of the program is a login & register menu, which lead to the appropriate functionality. 
 Such functionality includes features as:
+- viewing tables
 - adding employees to the database
 - assigning projects
 - changing salary
@@ -14,20 +15,35 @@ The idea is that we perform different changes in our Employee Record by using di
 
 Setup instructions
 -------------------
+This project presumes you have Python 3 installed.
 
-Create a new database:
-- open MySQL shell
-- \sql (switches to SQL processing mode)
-- \connect <username>@<hostname>
-- CREATE DATABASE company_db_simulation;
+Download MySQL:
+1. Open up a browser and go to: http://dev.mysql.com/downloads/mysql/
+2. Scroll to the list of available downloads. Click the 'Download' button next to the applicable download.
+3. Follow the configuration steps 
+4. On the Security Options screen, specify a new root password
+5. After all the Configuration steps have run, you have successfully installed MySQL.
 
-Copy the seed.sql file to your MySQL Server/bin folder
+Customizing the PATH for MySQL Tools:
+1. Copy the path of your MySQL Server/bin directory & add it as a new environment variable in the Path variable.
+https://dev.mysql.com/doc/mysql-windows-excerpt/5.7/en/mysql-installation-windows-path.html
 
-Import the seed.sql file into the new database from cmd (run as administrator):
-- mysql -u root -p company_db_simulation < seed.sql (this command needs to be ran in your MySQL Server/bin folder)
+Create a local copy of the repository:
+1. Open Git Bash terminal
+2. Move to a directory where you wish to store your repo
+3. Run: git clone https://github.com/ze-mo/Employee-Management-System.git
 
-Additionally, you need to set your hostname, username and password of your connection in the employee_management.py script.
----------
+Getting the requirements:
+1. Open a terminal of your choice (run as administrator)
+2. Go to the directory in which you store your copy of the repository
+3. Activate your virtual environment
+4. Run: pip install -r requirements.txt 
 
-Now, you are ready to run the program.
-Enjoy!
+Creating the database:
+1. Run the db_deployment.py script to create an empty database
+2. Import the seed.sql file into the new database
+> mysql -u root -p 'database_name' < seed.sql
+
+Running the program:
+1. Run the main.py script
+------------------
