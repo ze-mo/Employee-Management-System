@@ -5,7 +5,7 @@ import mysql.connector
 from prettytable import PrettyTable
 
 #Initializes a connection to the database
-print("Please connect to the Database of choice\n")
+print("Please connect to the company database\n")
 while True:
     usr = input("Username: ")
     password = input("Password: ")

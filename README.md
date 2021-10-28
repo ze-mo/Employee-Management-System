@@ -41,9 +41,11 @@ Getting the requirements:
 
 Creating the database:
 1. Run the db_deployment.py script to create an empty database
+> start db_deployment.py
 2. Import the seed.sql file into the new database
 > mysql -u root -p 'database_name' < seed.sql
 
 Running the program:
 1. Run the main.py script
+> start main.py
 ------------------
