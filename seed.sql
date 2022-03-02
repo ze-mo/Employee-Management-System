@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.26, for Win64 (x86_64)
 --
--- Host: localhost    Database: company_db_simulation
+-- Host: localhost    Database: Company_DB_simulation
 -- ------------------------------------------------------
 -- Server version	8.0.26
 
@@ -23,13 +23,14 @@ DROP TABLE IF EXISTS `client`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `client` (
-  `client_name` varchar(40) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `client_name` varchar(40) DEFAULT NULL,
   `client_location` varchar(40) DEFAULT NULL,
   `dep_id` int DEFAULT NULL,
-  PRIMARY KEY (`client_name`),
+  PRIMARY KEY (`id`),
   KEY `dep_id` (`dep_id`),
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`dep_id`) REFERENCES `works_on` (`dep_id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +39,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES ('Company_1','California, USA',3),('Company_2','Alberta, Canada',4),('Company_3','Michigan, USA',3);
+INSERT INTO `client` VALUES (1,'Company_1','California, USA',3),(2,'Company_2','Alberta, Canada',4),(3,'Company_3','Michigan, USA',3);
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,11 +51,11 @@ DROP TABLE IF EXISTS `department`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `department` (
-  `dep_id` int NOT NULL,
-  `dep_name` varchar(40) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `dep_name` varchar(40) DEFAULT NULL,
   `location` varchar(40) DEFAULT NULL,
-  PRIMARY KEY (`dep_id`,`dep_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,14 +69,14 @@ INSERT INTO `department` VALUES (1,'Corporate','Sofia'),(2,'Sales','Sofia'),(3,'
 UNLOCK TABLES;
 
 --
--- Table structure for table `employee_main_info`
+-- Table structure for table `employees`
 --
 
-DROP TABLE IF EXISTS `employee_main_info`;
+DROP TABLE IF EXISTS `employees`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employee_main_info` (
-  `emp_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `employees` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `first_name` varchar(40) DEFAULT NULL,
   `last_name` varchar(40) DEFAULT NULL,
   `birth_day` date DEFAULT NULL,
@@ -85,22 +86,22 @@ CREATE TABLE `employee_main_info` (
   `dep_id` int DEFAULT NULL,
   `project_id` int DEFAULT NULL,
   `location` varchar(40) DEFAULT NULL,
-  PRIMARY KEY (`emp_id`),
+  PRIMARY KEY (`id`),
   KEY `dep_id` (`dep_id`),
   KEY `project_id` (`project_id`),
-  CONSTRAINT `employee_main_info_ibfk_1` FOREIGN KEY (`dep_id`) REFERENCES `department` (`dep_id`) ON DELETE SET NULL,
-  CONSTRAINT `employee_main_info_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`project_id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=1002 DEFAULT CHARSET=latin1;
+  CONSTRAINT `employees_ibfk_1` FOREIGN KEY (`dep_id`) REFERENCES `department` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `employees_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=1009 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employee_main_info`
+-- Dumping data for table `employees`
 --
 
-LOCK TABLES `employee_main_info` WRITE;
-/*!40000 ALTER TABLE `employee_main_info` DISABLE KEYS */;
-INSERT INTO `employee_main_info` VALUES (1001,'John','Smith','1987-03-15','M','æp÷öÚ’üÒÁ\r É)ñ³',3000,3,501,'Sofia');
-/*!40000 ALTER TABLE `employee_main_info` ENABLE KEYS */;
+LOCK TABLES `employees` WRITE;
+/*!40000 ALTER TABLE `employees` DISABLE KEYS */;
+INSERT INTO `employees` VALUES (1006,'John','Smith','1967-03-18','M','+*FE¯7]aª<›ñü[',4000,1,NULL,'Sofia'),(1007,'Peter','Brown','1988-03-03','M','35b¶õ‹o¾?6¸¹Œ†[',NULL,4,502,'Plovdiv'),(1008,'Olivia','Miller','1992-02-22','F','1tñdš½CfíŽ×q¡gz2',3000,3,500,'Sofia');
+/*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -111,9 +112,11 @@ DROP TABLE IF EXISTS `login_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `login_info` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(40) DEFAULT NULL,
-  `password` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `password` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +125,7 @@ CREATE TABLE `login_info` (
 
 LOCK TABLES `login_info` WRITE;
 /*!40000 ALTER TABLE `login_info` DISABLE KEYS */;
-INSERT INTO `login_info` VALUES ('admin','961302f886378a116f44d987c3426fdc48d66a89855596c6a947b0b42e8e0505'),('johny','c7d263cad171d4d9d7ea90f7890ae688cc959825c950d5f85feee581d6fbf8a4');
+INSERT INTO `login_info` VALUES (1,'admin','5942d2af745b8165011541ac70d23933f43f64cad4973d0894e8abf46c85913d'),(4,'user1','5942d2af745b8165011541ac70d23933f43f64cad4973d0894e8abf46c85913d'),(5,'user2','5942d2af745b8165011541ac70d23933f43f64cad4973d0894e8abf46c85913d'),(6,'user3','5942d2af745b8165011541ac70d23933f43f64cad4973d0894e8abf46c85913d');
 /*!40000 ALTER TABLE `login_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,9 +137,9 @@ DROP TABLE IF EXISTS `project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `project` (
-  `project_id` int NOT NULL,
+  `id` int NOT NULL,
   `project_name` varchar(40) DEFAULT NULL,
-  PRIMARY KEY (`project_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -163,8 +166,8 @@ CREATE TABLE `works_on` (
   `client_name` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`dep_id`,`project_id`),
   KEY `project_id` (`project_id`),
-  CONSTRAINT `works_on_ibfk_1` FOREIGN KEY (`dep_id`) REFERENCES `department` (`dep_id`) ON DELETE CASCADE,
-  CONSTRAINT `works_on_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`project_id`) ON DELETE CASCADE
+  CONSTRAINT `works_on_ibfk_1` FOREIGN KEY (`dep_id`) REFERENCES `department` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `works_on_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -187,4 +190,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-10-19 17:04:57
+-- Dump completed on 2022-03-02  3:10:48
