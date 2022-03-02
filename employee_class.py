@@ -14,8 +14,8 @@ class Employee():
         input("Last name: ").capitalize(),
         input("Birth date (Year-Month-Day): "),
         input("Gender (F/M): ").upper(),
-        input("Social security number: "),
-        input("Location: ").capitalize()
+        input("Social security number (10 digits): "),
+        input("Location (Sofia or Plovdiv): ").capitalize()
         )
 
 
