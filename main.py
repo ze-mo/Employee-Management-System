@@ -75,7 +75,7 @@ def check_admin(username):
 
 def assign_project():
     employee_id = input("Choose an employee by ID: ")
-    mycursor.execute(f"SELECT dep_id FROM employee_main_info WHERE emp_id = {int(employee_id)}")
+    mycursor.execute(f"SELECT dep_id FROM employees WHERE id = {int(employee_id)}")
     department_id = 0
     for x in mycursor:
         department_id += int("".join(str(t) for t in x))
@@ -84,14 +84,18 @@ def assign_project():
 
     while True:
         try:
-            mode = input(f"Available projects for department '{department_id}' are: {projects_id}. Choose project_id: ")
-            mycursor.execute(f"UPDATE employee_main_info SET project_id = {int(mode)} WHERE emp_id = {int(employee_id)}")
-            db.commit()
-            print("\nYou've assigned project successfully!")
+            if len(projects_id) == 0:
+                print("There are currently no projects for this employee's department!")
+                break
+            else:
+                mode = input(f"Available projects for department '{department_id}' are: {projects_id}. Choose project_id: ")
+                mycursor.execute(f"UPDATE employees SET project_id = {int(mode)} WHERE id = {int(employee_id)}")
+                db.commit()
+                print("\nYou've assigned project successfully!")
 
-            query_describe_table = ['emp_id', 'first_name', 'last_name', 'dep_id', 'project_id']
-            query_view_table = (f"SELECT emp_id, first_name, last_name, dep_id, project_id FROM employee_main_info WHERE emp_id = {employee_id}")
-            open_table(query_describe_table, query_view_table)
+            fields = ['id', 'first_name', 'last_name', 'dep_id', 'project_id']
+            query_view_table = (f"SELECT id, first_name, last_name, dep_id, project_id FROM employees WHERE id = {employee_id}")
+            open_table(fields, query_view_table)
             break
         except Exception:
             print("\nYou didn't choose a project correctly!")
@@ -99,7 +103,7 @@ def assign_project():
 
 def change_salary():
     employee_id = input("Choose an employee by ID: ")
-    mycursor.execute(f"SELECT salary FROM employee_main_info WHERE emp_id = {int(employee_id)}")
+    mycursor.execute(f"SELECT salary FROM employees WHERE id = {int(employee_id)}")
     salary = [x[0] for x in mycursor]
     if salary != [None]:
         salary = int("".join(str(t) for t in salary))
@@ -109,12 +113,12 @@ def change_salary():
     while True:
         try:
             mode = input(f"Current employee salary is {salary}. Choose a new value: ")
-            mycursor.execute(f"UPDATE employee_main_info SET salary = {int(mode)} WHERE emp_id = {int(employee_id)}")
+            mycursor.execute(f"UPDATE employees SET salary = {int(mode)} WHERE id = {int(employee_id)}")
             db.commit()
             print("\nYou've changed the salary successfully!")
-            query_describe_table = ['emp_id', 'first_name', 'last_name', 'salary']
-            query_view_table = (f"SELECT emp_id, first_name, last_name, salary FROM employee_main_info WHERE emp_id = {employee_id}")
-            open_table(query_describe_table, query_view_table)
+            fields = ['id', 'first_name', 'last_name', 'salary']
+            query_view_table = (f"SELECT id, first_name, last_name, salary FROM employees WHERE id = {employee_id}")
+            open_table(fields, query_view_table)
             break
 
         except Exception:
@@ -134,28 +138,33 @@ def open_table(field_query, rows_query):
 
 def set_dep_id(dep_name, location):
     dep_info = []
-    query_extract_dep = f"SELECT dep_id FROM department WHERE dep_name = '{dep_name}' AND location = '{location}'"
+    query_extract_dep = f"SELECT id FROM department WHERE dep_name = '{dep_name}' AND location = '{location}'"
     mycursor.execute(query_extract_dep)
     for x in mycursor:
         dep_info.append(x)
 
     for dep in dep_info:
-        mycursor.execute(f"UPDATE employee_main_info SET dep_id = {dep[0]} WHERE emp_id = LAST_INSERT_ID()")
+        mycursor.execute(f"UPDATE employees SET dep_id = {dep[0]} WHERE id = LAST_INSERT_ID()")
         db.commit()
 
 def view_table_employee(): 
     if check_admin(username): #Full employee table with visible sensitive info (admin permission required)
-        query_describe_table = ("DESC employee_main_info")
-        query_view_table = ("SELECT emp_id, first_name, last_name, DATE_FORMAT(birth_day,'%d/%m/%Y'), sex, cast(aes_decrypt(social_security_number, 'key1234') as char(100)), salary, dep_id, project_id, location FROM employee_main_info")
+        fields = ("DESC employees")
+        query_view_table = ("SELECT id, first_name, last_name, DATE_FORMAT(birth_day,'%d/%m/%Y'), sex, cast(aes_decrypt(social_security_number, 'key1234') as char(100)), salary, dep_id, project_id, location FROM employees")
     else: #Limited table for employees with no admin priviliges
-        query_describe_table = ['emp_id', 'first_name', 'last_name', 'birth_day', 'sex', 'dep_id', 'project_id', 'location']
-        query_view_table = ("SELECT emp_id, first_name, last_name, DATE_FORMAT(birth_day,'%d/%m/%Y'), sex, dep_id, project_id, location FROM employee_main_info")
-    open_table(query_describe_table, query_view_table)
+        fields = ['id', 'first_name', 'last_name', 'birth_day', 'sex', 'dep_id', 'project_id', 'location']
+        query_view_table = ("SELECT id, first_name, last_name, DATE_FORMAT(birth_day,'%d/%m/%Y'), sex, dep_id, project_id, location FROM employees")
+    open_table(fields, query_view_table)
 
 def view_table(table):
-    query_describe_table = (f"DESC {table}")
+    fields = (f"DESC {table}")
     query_view_table = (f"SELECT * FROM {table}")
-    open_table(query_describe_table, query_view_table)
+    open_table(fields, query_view_table)
+
+def projects_by_employees(table):
+    fields = ['first_name', 'last_name', 'project_name']
+    query_view_table = ("SELECT employees.first_name, employees.last_name, project.project_name FROM employees JOIN project ON employees.project_id=project.id")
+    open_table(fields, query_view_table)
 
 def add_employee():
     print("\nPlease enter employee data: ")
@@ -170,7 +179,7 @@ def add_employee():
             new_emp.social_security_number,
             new_emp.location
             ]
-            dep_name = input("Department: ")
+            dep_name = input("Department (IT, Sales, Corporate): ")
 
             if new_emp.sex != 'M' and new_emp.sex != 'F':
                 raise ValueError("Gender options are M/F")
@@ -178,9 +187,11 @@ def add_employee():
                 raise ValueError("Chosen location must be Sofia or Plovdiv")
             if len(new_emp.social_security_number) != 10:
                 raise ValueError("SSN should be 10 digits long")
+            if new_emp.location == 'Plovdiv' and dep_name != 'IT':
+                raise ValueError("Only working department in Plovdiv is IT")
 
             check_department(dep_name)
-            query_main_info = ("INSERT INTO employee_main_info (first_name, last_name, birth_day, sex, social_security_number, location) VALUES (%s, %s, %s, %s, aes_encrypt(%s, 'key1234'), %s)")
+            query_main_info = ("INSERT INTO employees (first_name, last_name, birth_day, sex, social_security_number, location) VALUES (%s, %s, %s, %s, aes_encrypt(%s, 'key1234'), %s)")
             mycursor.execute(query_main_info, info_list) #Sensitive info is encrypted before it's stored in the database
             set_dep_id(dep_name, new_emp.location)
             break
@@ -191,7 +202,7 @@ def add_employee():
     db.commit()
 
 def view_mode(): #View option after login stage
-    tables_list = ['employee', 'project', 'department', 'works_on', 'client']
+    tables_list = ['employee', 'project', 'department', 'works_on', 'client', 'projects_by_employees']
     table = input(f"\nView table {tables_list}: ").lower()
     if table == 'employee':
         perform_operation_decorator(table)
@@ -221,13 +232,15 @@ def perform_operation_decorator(chosen_operation, *args):
         'login': login,
         'register': register,
         'view': view_mode,
-        'modify': modify_mode
+        'modify': modify_mode,
+        'projects_by_employees': projects_by_employees
     }
 
     chosen_operation_function = operations.get(chosen_operation, "Invalid Input")
     try:
         return chosen_operation_function(*args)
-    except Exception:
+    except Exception as e:
+        print(e)
         print("Invalid Input")
 
 def main():
@@ -258,5 +271,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-print("\nHave a nice day!")
+    print("\nHave a nice day!")
