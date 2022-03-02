@@ -1,21 +1,17 @@
 # Employee-Management-System
 
-Project about a Database-driven Employee Management System. The repository consists of a MySQL database, an employee management Python script allowing reading and modifying information in the DB, SQL file for initializing the database, employee class module and a requirements file.
+Project about a Database-driven Employee Management System. The repository consists of a MySQL database creation script, an employee management Python script allowing reading and modifying information in the DB, SQL file for initializing the database and an employee class module.
 
-The cycle of the program is a login & register menu, which lead to the appropriate functionality. 
-Such functionality includes features as:
+The cycle of the program is a login & register menu, which lead to the appropriate functionality, such as: 
 - viewing tables
 - adding employees to the database
 - assigning projects
 - changing salary
 etc.
 
-The idea is that we perform different changes in our Employee Record by using different functions inside of our script.
-
-
 Setup instructions
 -------------------
-This project presumes you have Python 3 installed.
+This project assumes you have Python 3 and Git installed.
 
 Download MySQL:
 1. Open up a browser and go to: http://dev.mysql.com/downloads/mysql/
@@ -40,8 +36,8 @@ Getting the requirements:
 4. Run: pip install -r requirements.txt 
 
 Creating the database:
-1. Run the db_deployment.py script to create an empty database
-> start db_deployment.py
+1. Run the create_db.py script to create an empty database
+> start create_db.py
 2. Import the seed.sql file into the new database
 > mysql -u root -p 'database_name' < seed.sql
 
