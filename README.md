@@ -9,6 +9,10 @@ The cycle of the program is a login & register menu, which lead to the appropria
 - changing salary
 etc.
 
+
+### EER Diagram
+![EER_Diagram](https://user-images.githubusercontent.com/90049004/156519313-98a332a1-440f-4425-b788-a0946dab087b.png)
+
 Setup instructions
 -------------------
 This project assumes you have Python 3 and Git installed.
