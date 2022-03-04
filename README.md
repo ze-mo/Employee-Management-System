@@ -11,7 +11,7 @@ etc.
 
 
 ### EER Diagram
-![EER_Diagram](https://user-images.githubusercontent.com/90049004/156519313-98a332a1-440f-4425-b788-a0946dab087b.png)
+![EER_Diagram](https://user-images.githubusercontent.com/90049004/156761039-2d45ac62-0df8-498a-980c-6ce012e8321d.png)
 
 Setup instructions
 -------------------
